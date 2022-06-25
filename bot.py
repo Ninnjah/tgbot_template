@@ -6,6 +6,8 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
 from dotenv import load_dotenv
+if __name__ == "__main__":
+    load_dotenv(".env")
 
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
@@ -24,9 +26,6 @@ from tgbot.middlewares.locale import i18n
 from tgbot.middlewares.throttling import ThrottlingMiddleware
 
 logger = logging.getLogger(__name__)
-
-if __name__ == "__main__":
-    load_dotenv(".env")
 
 
 async def create_pool(database_url: str, echo: bool) -> AsyncEngine:

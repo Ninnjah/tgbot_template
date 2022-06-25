@@ -20,8 +20,13 @@ from pathlib import Path
 
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 
+from tgbot.config import load_config
+
+
+config = load_config()
+
 # Name for localisation files
-I18N_DOMAIN = "weather-bot"
+I18N_DOMAIN = config.tg_bot.domain
 
 # Bot directory
 BASE_DIR = Path(__name__).parent

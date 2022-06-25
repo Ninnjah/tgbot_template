@@ -14,6 +14,7 @@ class TgBot:
     token: str
     admin_list: List[int]
     use_redis: bool
+    domain: str
 
 
 @dataclass
@@ -53,6 +54,7 @@ def load_config():
             token=getenv("BOT_TOKEN"),
             admin_list=[int(x.strip()) for x in getenv("ADMIN_ID").split(",")],
             use_redis=cast_bool(getenv("USE_REDIS")),
+            domain=cast_bool(getenv("DOMAIN")),
         ),
         db=DbConfig(
             database_url=getenv("DATABASE_URL").replace(

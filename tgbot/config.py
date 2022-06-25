@@ -57,9 +57,7 @@ def load_config():
             domain=cast_bool(getenv("DOMAIN")),
         ),
         db=DbConfig(
-            database_url=getenv("DATABASE_URL").replace(
-                "postgres://", "postgresql+asyncpg://"
-            )
+            database_url=getenv("DATABASE_URL")
         ),
         redis=RedisConfig(url=getenv("REDIS_URL"))
     )

@@ -1,5 +1,5 @@
 [Unit]
-Description=Course Bot
+Description=Telegram bot
 After=network.target
 
 [Service]

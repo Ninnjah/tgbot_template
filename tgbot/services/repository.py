@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine.row import RowMapping
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio.engine import AsyncConnection
 
-from tgbot.database.tables import admins, users, projects
+from tgbot.database.tables import admins, users
 
 
 class Repo:

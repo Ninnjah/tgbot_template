@@ -7,79 +7,18 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, ContentTypes, Message
 from aiogram.utils import parts
 
-from tgbot.cb_data import admin_add_conf_cb, admin_delete_conf_cb, cancel_cb
-from tgbot.handlers.reply import admin_kb
-from tgbot.handlers.inline.admin import admin_add_conf_kb, admin_delete_conf_kb
-from tgbot.handlers.states.admin.admin_panel import AdminPanelStates
+from tgbot.cb_data import yesno_cb
+from tgbot.handlers.inline.admin import yesno_kb
+from tgbot.handlers.states.admin.admin_panel import ManageAdminStates
 from tgbot.middlewares.locale import _
 from tgbot.models.role import UserRole
 from tgbot.services.repository import Repo
 
 logger = logging.getLogger(__name__)
+GOAL = "admin"
 
 
-async def cancel_handler(callback: CallbackQuery, state: FSMContext):
-    # Reset state
-    await state.reset_state()
-    # Remove message
-    await callback.message.delete()
-    # Send message about cancel action
-    await callback.message.answer(_("Action was canceled"))
-
-
-async def admin_panel(m: Message):
-    await m.reply(
-        _(
-            "Hello, Admin!"
-        ).format(
-            user_name=m.from_user.first_name
-        ),
-        reply_markup=admin_kb.get_kb()
-    )
-
-
-# Users
-async def list_users(m: Message, repo: Repo):
-    # Get all users from database
-    user_list = await repo.list_users()
-
-    # If any user was found
-    if user_list:
-        msg_text: str = ""
-
-        # Generate message text
-        for num, user in enumerate(user_list, start=1):
-            username = f"@{user.username}" if user.username is not None else ""
-            msg_text += _(
-                "{num}. {user_id} "
-                "<a href='tg://user?id={user_id}'><b>{fullname}</b></a> "
-                "{username}[{date}]\n"
-            ).format(
-                num=num,
-                user_id=user.user_id,
-                fullname=user.fullname,
-                username=username,
-                date=user.created_on
-            )
-
-        # If message long than maximum possible message
-        # then split message text on parts
-        if len(msg_text) > parts.MAX_MESSAGE_LENGTH:
-            for message in parts.safe_split_text(
-                msg_text, split_separator="\n"
-            ):
-                await m.answer(message)
-
-        # Else simply send this message text
-        else:
-            await m.answer(msg_text)
-
-    # If no users was found then send message about it
-    else:
-        await m.answer(_("No users was found"))
-
-
-# Admins
+# List admins
 async def list_admins(m: Message, repo: Repo):
     # Get all admins from database
     user_list = await repo.list_admins()
@@ -116,11 +55,12 @@ async def list_admins(m: Message, repo: Repo):
         await m.answer(_("No admins was added"))
 
 
+# Add admins
 async def add_admin(m: Message, state: FSMContext):
     # Reseting state
     await state.reset_state()
     # Set add admin state
-    await AdminPanelStates.add_admin_state.set()
+    await state.set_state(ManageAdminStates.add_admin.state)
 
     # Send message
     await m.answer(
@@ -172,16 +112,12 @@ async def add_admin_handle(m: Message, state: FSMContext, repo: Repo):
                 ).format(
                     user_id=user_id
                 ),
-                reply_markup=admin_add_conf_kb.get_kb(user_id)
+                reply_markup=yesno_kb.get(f"add_{GOAL}", user_id)
             )
 
         # If user is admin
         else:
-            await m.answer(
-                _(
-                    "User is already an admin"
-                )
-            )
+            await m.answer(_("User is already an admin"))
 
 
 async def add_admin_conf(
@@ -191,7 +127,7 @@ async def add_admin_conf(
     repo: Repo
 ):
     # Get user id from callback data
-    user_id: int = int(callback_data.get("user_id"))
+    user_id: int = int(callback_data.get("data"))
 
     # Add user to admin table
     await repo.add_admin(user_id=user_id)
@@ -211,11 +147,17 @@ async def add_admin_conf(
     )
 
 
+async def add_admin_cancel(callback: CallbackQuery, state: FSMContext):
+    await state.finish()
+    await callback.message.edit_text(_("Action was canceled"))
+
+
+# Delete admins
 async def del_admin(m: Message, state: FSMContext):
     # Reseting state
     await state.reset_state()
     # Set del admin state
-    await AdminPanelStates.del_admin_state.set()
+    await state.set_state(ManageAdminStates.del_admin.state())
 
     # Send message
     await m.answer(
@@ -267,16 +209,12 @@ async def del_admin_handle(m: Message, state: FSMContext, repo: Repo):
                 ).format(
                     user_id=user_id
                 ),
-                reply_markup=admin_delete_conf_kb.get_kb(user_id)
+                reply_markup=yesno_kb.get(f"del_{GOAL}", user_id)
             )
 
         # If user is not admin
         else:
-            await m.answer(
-                _(
-                    "This user is not an admin"
-                )
-            )
+            await m.answer(_("This user is not an admin"))
 
 
 async def del_admin_conf(
@@ -286,7 +224,7 @@ async def del_admin_conf(
     repo: Repo
 ):
     # Get user id from callback data
-    user_id: int = int(callback_data.get("user_id"))
+    user_id: int = int(callback_data.get("data"))
 
     # Add user to admin table
     await repo.del_admin(user_id=user_id)
@@ -306,27 +244,16 @@ async def del_admin_conf(
     )
 
 
-def register_admin(dp: Dispatcher):
-    # Admin panel
-    dp.register_message_handler(
-        admin_panel, commands=["admin"],
-        state="*", role=UserRole.ADMIN
-    )
+async def del_admin_cancel(callback: CallbackQuery, state: FSMContext):
+    await state.finish()
+    await callback.message.edit_text(_("Action was canceled"))
 
-    # List users
-    dp.register_message_handler(
-        list_users, lambda m: m.text == _("List users"),
-        state="*", role=UserRole.ADMIN
-    )
 
+def register(dp: Dispatcher):
     # List admins
     dp.register_message_handler(
         list_admins, lambda m: m.text == _("List admins"),
         state="*", role=UserRole.ADMIN
-    )
-
-    dp.register_callback_query_handler(
-        cancel_handler, cancel_cb.filter(), state="*"
     )
 
     # Add admin
@@ -336,11 +263,15 @@ def register_admin(dp: Dispatcher):
     )
     dp.register_message_handler(
         add_admin_handle, content_types=ContentTypes.ANY,
-        state=AdminPanelStates.add_admin_state, role=UserRole.ADMIN
+        state=ManageAdminStates.add_admin, role=UserRole.ADMIN
     )
     dp.register_callback_query_handler(
-        add_admin_conf, admin_add_conf_cb.filter(),
-        state=AdminPanelStates.add_admin_state
+        add_admin_conf, yesno_cb.filter(action=f"add_{GOAL}", value="1"),
+        state=ManageAdminStates.add_admin
+    )
+    dp.register_callback_query_handler(
+        add_admin_cancel, yesno_cb.filter(action=f"add_{GOAL}", value="0"),
+        state=ManageAdminStates.add_admin
     )
 
     # Delete admin
@@ -350,19 +281,13 @@ def register_admin(dp: Dispatcher):
     )
     dp.register_message_handler(
         del_admin_handle, content_types=ContentTypes.ANY,
-        state=AdminPanelStates.del_admin_state, role=UserRole.ADMIN
+        state=ManageAdminStates.del_admin, role=UserRole.ADMIN
     )
     dp.register_callback_query_handler(
-        del_admin_conf, admin_delete_conf_cb.filter(),
-        state=AdminPanelStates.del_admin_state
+        del_admin_conf, yesno_cb.filter(action=f"del_{GOAL}", value="1"),
+        state=ManageAdminStates.del_admin
     )
-    # # or you can pass multiple roles:
-    # dp.register_message_handler(
-    #     admin_panel, commands=["admin"],
-    #     state="*", role=[UserRole.ADMIN]
-    # )
-    # # or use another filter:
-    # dp.register_message_handler(
-    #     admin_panel, commands=["admin"],
-    #     state="*", is_admin=True
-    # )
+    dp.register_callback_query_handler(
+        del_admin_cancel, yesno_cb.filter(action=f"del_{GOAL}", value="0"),
+        state=ManageAdminStates.del_admin
+    )

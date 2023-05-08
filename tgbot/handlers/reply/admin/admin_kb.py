@@ -4,7 +4,7 @@ from aiogram.types.reply_keyboard import ReplyKeyboardMarkup, KeyboardButton
 from tgbot.middlewares.locale import _
 
 
-def get_kb():
+def get():
     keyboard = ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
 
     keyboard.add(

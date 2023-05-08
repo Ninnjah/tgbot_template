@@ -17,7 +17,8 @@ from tgbot.config import load_config
 from tgbot.database.tables import metadata
 from tgbot.filters.role import RoleFilter, AdminFilter
 
-from tgbot.handlers.admin import register_admin
+from tgbot.handlers import admin
+
 from tgbot.handlers.user import register_user
 
 from tgbot.middlewares.db import DbMiddleware
@@ -95,7 +96,10 @@ async def main():
     dp.filters_factory.bind(AdminFilter)
 
     # Register admin handlers
-    register_admin(dp)
+    admin.admin_panel.register(dp)
+    admin.admins.register(dp)
+    admin.users.register(dp)
+    
     # Register user handlers
     register_user(dp)
 

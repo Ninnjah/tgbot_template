@@ -1,16 +1,12 @@
 """User main handlers"""
 from aiogram import Dispatcher
-from aiogram.dispatcher import FSMContext
-from aiogram.types import CallbackQuery, Message
-from aiogram.utils import parts
+from aiogram.types import Message
 
-from tgbot.cb_data import cancel_cb, main_menu_cb
-from tgbot.handlers.inline import main_menu
 from tgbot.middlewares.locale import _
 from tgbot.services.repository import Repo
 
 
-async def user_start(m: Message, repo: Repo):
+async def start(m: Message, repo: Repo):
     # Add user to database
     await repo.add_user(
         user_id=m.from_user.id,
@@ -26,6 +22,6 @@ async def user_start(m: Message, repo: Repo):
     )
 
 
-def register_user(dp: Dispatcher):
+def register(dp: Dispatcher):
     # User start
-    dp.register_message_handler(user_start, commands=["start"], state="*")
+    dp.register_message_handler(start, commands=["start"], state="*")

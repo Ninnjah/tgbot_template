@@ -18,8 +18,7 @@ from tgbot.database.tables import metadata
 from tgbot.filters.role import RoleFilter, AdminFilter
 
 from tgbot.handlers import admin
-
-from tgbot.handlers.user import register_user
+from tgbot.handlers import user
 
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
@@ -99,9 +98,9 @@ async def main():
     admin.admin_panel.register(dp)
     admin.admins.register(dp)
     admin.users.register(dp)
-    
+
     # Register user handlers
-    register_user(dp)
+    user.start.register(dp)
 
     # start
     try:

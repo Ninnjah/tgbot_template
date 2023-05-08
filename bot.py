@@ -100,6 +100,7 @@ async def main():
     admin_panel.register(dp)
     admin_admins.register(dp)
     admin_users.register(dp)
+    admin_localisation.register(dp)
 
     # Register user handlers
     user_start.register(dp)

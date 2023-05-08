@@ -1,0 +1,127 @@
+# Translations template for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-05-09 01:08+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: tgbot/handlers/admin/admin_panel.py:15
+msgid "Hello, Admin!"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:32
+msgid "{num}. <a href='tg://user?id={user_id}'><b>{user_id}</b></a> [{date}]\n"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:55
+msgid "No admins was added"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:67
+msgid "Send user id or forward message from user who will be an admin"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:86 tgbot/handlers/admin/admins.py:183
+msgid ""
+"User id is invalid! Forward to me any message from this user, or send me "
+"his id. You can find it, for example, from the bot @my_id_bot"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:98 tgbot/handlers/admin/admins.py:195
+msgid ""
+"Forwarded message was not sent by user! Forward to me any message from "
+"this user, or send me his id. You can find it, for example, from the bot "
+"@my_id_bot"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:110
+msgid "Are you sure you want to add user {user_id} as an admin?"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:120
+msgid "User is already an admin"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:142
+msgid "User {user_id} was added as an admin!"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:152 tgbot/handlers/admin/admins.py:249
+msgid "Action was canceled"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:164
+msgid "Send user id or forward message from user who will removed from admins"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:206
+msgid "Are you sure you want to remove user {user_id} from admins?"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:217
+msgid "This user is not an admin"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:239
+msgid "User {user_id} was removed from admins!"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:255 tgbot/handlers/reply/admin/admin_kb.py:14
+msgid "List admins"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:261 tgbot/handlers/reply/admin/admin_kb.py:17
+msgid "Add admin"
+msgstr ""
+
+#: tgbot/handlers/admin/admins.py:279 tgbot/handlers/reply/admin/admin_kb.py:18
+msgid "Delete admin"
+msgstr ""
+
+#: tgbot/handlers/admin/localisation.py:21
+msgid "Create localisation from this template and upload it"
+msgstr ""
+
+#: tgbot/handlers/admin/localisation.py:27
+#: tgbot/handlers/reply/admin/admin_kb.py:21
+msgid "Get template"
+msgstr ""
+
+#: tgbot/handlers/admin/users.py:27
+msgid ""
+"{num}. {user_id} <a href='tg://user?id={user_id}'><b>{fullname}</b></a> "
+"{username}[{date}]\n"
+msgstr ""
+
+#: tgbot/handlers/admin/users.py:53
+msgid "No users was found"
+msgstr ""
+
+#: tgbot/handlers/admin/users.py:59 tgbot/handlers/reply/admin/admin_kb.py:11
+msgid "List users"
+msgstr ""
+
+#: tgbot/handlers/inline/yesno_kb.py:18
+msgid "Yes"
+msgstr ""
+
+#: tgbot/handlers/inline/yesno_kb.py:26
+msgid "No"
+msgstr ""
+
+#: tgbot/handlers/user/start.py:21
+msgid "Hello, User!"
+msgstr ""
+

@@ -17,6 +17,7 @@ Step 4: compile translations
     localisation files
 """
 from pathlib import Path
+from subprocess import run
 
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 
@@ -33,6 +34,7 @@ BASE_DIR = Path(__name__).parent
 # Locales directory
 LOCALES_DIR = BASE_DIR / "locales"
 
+run(f"pybabel compile -d locales -D {I18N_DOMAIN}")
 # Localisation middleware
 i18n = I18nMiddleware(I18N_DOMAIN, LOCALES_DIR)
 

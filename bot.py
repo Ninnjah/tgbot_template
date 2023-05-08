@@ -23,6 +23,7 @@ from tgbot.handlers.user import register_user
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
 from tgbot.middlewares.locale import i18n
+from tgbot.middlewares.mediagroup import AlbumMiddleware
 from tgbot.middlewares.throttling import ThrottlingMiddleware
 
 logger = logging.getLogger(__name__)
@@ -83,6 +84,8 @@ async def main():
     dp.middleware.setup(DbMiddleware(pool))
     # Setup role middleware
     dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_list))
+    # Setup mediagroup middleware
+    dp.middleware.setup(AlbumMiddleware())
     # Setup throttling middleware
     dp.middleware.setup(ThrottlingMiddleware())
     # Setup localisation middleware

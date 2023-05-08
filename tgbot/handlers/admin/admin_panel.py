@@ -3,7 +3,7 @@ import logging
 from aiogram import Dispatcher
 from aiogram.types import Message
 
-from tgbot.handlers.reply import admin_kb
+from tgbot.handlers.reply.admin import admin_kb
 from tgbot.middlewares.locale import _
 from tgbot.models.role import UserRole
 

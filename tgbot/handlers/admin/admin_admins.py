@@ -8,7 +8,7 @@ from aiogram.types import CallbackQuery, ContentTypes, Message
 from aiogram.utils import parts
 
 from tgbot.cb_data import yesno_cb
-from tgbot.handlers.inline.admin import yesno_kb
+from tgbot.handlers.inline import yesno_kb
 from tgbot.handlers.states.admin.admin_panel import ManageAdminStates
 from tgbot.middlewares.locale import _
 from tgbot.models.role import UserRole

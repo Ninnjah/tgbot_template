@@ -17,5 +17,8 @@ def get():
         KeyboardButton(_("Add admin")),
         KeyboardButton(_("Delete admin")),
     )
+    keyboard.add(
+        KeyboardButton(_("Get template"))
+    )
 
     return keyboard

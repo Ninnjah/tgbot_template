@@ -82,6 +82,8 @@ async def main():
     # Create Dispatcher instance
     dp = Dispatcher(bot, storage=storage)
 
+    logger.info(f"Bot starting at https://t.me/{(await bot.me).username}")
+
     # Setup database middleware
     dp.middleware.setup(DbMiddleware(pool))
     # Setup role middleware

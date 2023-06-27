@@ -1,5 +1,6 @@
 aiogram
 aioredis
+redis
 asyncpg
 python-dotenv
-sqlalchemy[async]
+sqlalchemy

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Sequence, Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.dialects.postgresql import insert
@@ -75,7 +75,7 @@ class Repo:
             # If no results found return None
             return None
 
-    async def list_users(self) -> list:
+    async def list_users(self) -> Sequence[RowMapping]:
         """List all bot users"""
         # Create statement
         stmt = select(users)
@@ -147,7 +147,7 @@ class Repo:
         # Return deleted row count
         return res.rowcount
 
-    async def list_admins(self) -> List[RowMapping]:
+    async def list_admins(self) -> Sequence[RowMapping]:
         """List all bot admins"""
         # Create statement
         stmt = select(admins)
